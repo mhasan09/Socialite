@@ -12,12 +12,12 @@ app.get('/',(request,response)=>{
     response.render('index')
 })
 app.get('/about',(request,response)=>{
-    response.sendFile(path.resolve(__dirname,'pages/about.html'))
+    response.render('about')
 })
 app.get('/contact',(request,response)=>{
-    response.sendFile(path.resolve(__dirname,'pages/contact.html'))
+    
 })
 app.get('/post',(request,response)=>{
-    response.sendFile(path.resolve(__dirname,'pages/post.html'))
+    
 })
 
