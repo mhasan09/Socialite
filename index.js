@@ -14,3 +14,7 @@ app.get('/about',(request,response)=>{
 app.get('/contact',(request,response)=>{
     response.sendFile(path.resolve(__dirname,'pages/contact.html'))
 })
+app.get('/post',(request,response)=>{
+    response.sendFile(path.resolve(__dirname,'pages/post.html'))
+})
+
