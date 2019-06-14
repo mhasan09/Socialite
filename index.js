@@ -14,8 +14,12 @@ app.set('views', `${__dirname}/views`)
 app.listen(3000,()=>{
     console.log("app listening on port 3000")
 })
-app.get('/',(request,response)=>{
-    response.render('index')
+app.get('/',async(request,response)=>{
+    const posts = await Post.find({})
+    console.log(posts)
+    response.render('index',{
+        posts  
+    })
 })
 app.get('/about',(request,response)=>{
     response.render('about')
