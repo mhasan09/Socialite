@@ -22,4 +22,8 @@ app.get('/contact',(request,response)=>{
 app.get('/post',(request,response)=>{
     response.render('post')
 })
+app.get('/post/new',(request,response)=>{
+    response.render('create')
+})
+
 
