@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const expressEdge = require('express-edge')
+const mongoose = require('mongoose')
+mongoose.connect('')
 app.use(express.static('public'))
 app.use(expressEdge) //adding functionality for templating engine
 app.set('views', `${__dirname}/views`)
