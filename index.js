@@ -15,9 +15,9 @@ app.get('/about',(request,response)=>{
     response.render('about')
 })
 app.get('/contact',(request,response)=>{
-    
+    response.render('contact')
 })
 app.get('/post',(request,response)=>{
-    
+    response.render('post')
 })
 
