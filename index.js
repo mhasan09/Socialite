@@ -4,7 +4,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload')
-
 const Post = require('./database/models/Post')
 
 const app = new express()
@@ -18,6 +17,14 @@ app.set('views', `${__dirname}/views`)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+const validateCreatePostMiddleware = (req,res,next) => {
+  if(!req.files.image || !req.body.username || !req.body.title || !req.body.subtitle || !req.body.content ){
+    return res.redirect('/posts/new')
+  }
+  next()
+}
+app.use('/posts/store', validateCreatePostMiddleware)
 
 app.get('/', async (req, res) => {
   const posts = await Post.find({})
