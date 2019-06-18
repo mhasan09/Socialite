@@ -17,6 +17,7 @@ const mongoStore = connectMongo(expressSession)
 const auth = require('./middleware/auth')
 const connectFlash = require('connect-flash')
 const redirectIfAuthenticated = require('./middleware/redirectIfAuthenticated')
+const edge = require('edge.js')
 const app = new express()
 
 
@@ -42,6 +43,11 @@ app.use(connectFlash())
 const storePost = require('./middleware/storePost')
 
 app.use('/posts/store', storePost)
+
+app.use('*',(req,res,next)=>{
+  edge.global('auth',req.session.userId)
+  next()
+})
 
 app.get('/', homePageController)
 
