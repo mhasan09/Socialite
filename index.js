@@ -1,3 +1,4 @@
+require('dotenv').config()
 const expressEdge = require('express-edge')
 const express = require('express')
 const mongoose = require('mongoose')
@@ -21,12 +22,12 @@ const loginUserController = require('./controllers/loginUser')
 const logoutController = require("./controllers/logout")
 const cloudinary = require('cloudinary')
 const app = new express()
-mongoose.connect('mongodb://localhost/node-js-blog')
+mongoose.connect(process.env.DB_URI)
 
 app.use(express.static('public'))
 app.use(expressEdge)
 app.use(expressSession({
-  secret : 'secret',
+  secret : process.env.EXPRESS_SESSION_KEY,
   store : new mongoStore({
     mongooseConnection : mongoose.connection
   })
@@ -45,9 +46,9 @@ const storePost = require('./middleware/storePost')
 app.use('/posts/store', storePost)
 
 cloudinary.config({
-  api_key : '229448141623746',
-  api_secret : '3LCiz6aKuo6ISxDqD4-HdTeE5Eg',
-  cloud_name : 'dbahof66r' , 
+  api_key : process.env.CLOUDINARY_API_KEY,
+  api_secret : process.env.CLOUDINARY_API_SECRET,
+  cloud_name : process.env.CLOUDINARY_NAME , 
 })
 
 app.use(bodyParser.json())
@@ -81,6 +82,6 @@ app.get('/contact', (req, res) => {
 
 app.use((req,res)=> res.render('not-found'))
 
-app.listen(4000, () => {
-  console.log('App listening on port 4000')
+app.listen(process.env.PORT, () => {
+  console.log(`App listening on port ${process.env.PORT}`)
 })
