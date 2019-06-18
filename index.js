@@ -11,6 +11,7 @@ const createUserController = require('./controllers/createUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
+const expressSession = require('express-session')
 
 const app = new express()
 
@@ -22,6 +23,10 @@ app.use(fileUpload())
 app.set('views', `${__dirname}/views`)
 
 app.use(bodyParser.json())
+app.use(expressSession({
+  secret : 'secret'
+  
+}))
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const storePost = require('./middleware/storePost')
