@@ -10,7 +10,6 @@ const getPostController = require('./controllers/getPost')
 const createUserController = require('./controllers/createUser')
 const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
-const loginUserController = require('./controllers/loginUser')
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')
 const mongoStore = connectMongo(expressSession)
@@ -18,18 +17,13 @@ const auth = require('./middleware/auth')
 const connectFlash = require('connect-flash')
 const redirectIfAuthenticated = require('./middleware/redirectIfAuthenticated')
 const edge = require('edge.js')
+const loginUserController = require('./controllers/loginUser')
+const logoutController = require("./controllers/logout");
 const app = new express()
-
-
+mongoose.connect('mongodb://localhost/node-js-blog')
 
 app.use(express.static('public'))
 app.use(expressEdge)
-app.use(fileUpload())
-app.set('views', `${__dirname}/views`)
-
-
-app.use(bodyParser.json())
-mongoose.connect('mongodb://localhost/node-js-blog')
 app.use(expressSession({
   secret : 'secret',
   store : new mongoStore({
@@ -37,21 +31,28 @@ app.use(expressSession({
   })
 
 }))
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(connectFlash())
+app.use("*", (req, res, next) => {
+  edge.global("auth", req.session.userId);
+  next();
+});
+app.use(fileUpload())
+app.set('views', `${__dirname}/views`)
 
+app.use(connectFlash())
 const storePost = require('./middleware/storePost')
 
 app.use('/posts/store', storePost)
 
-app.use('*',(req,res,next)=>{
-  edge.global('auth',req.session.userId)
-  next()
-})
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', homePageController)
 
 app.get('/posts/new',auth,createPostController)
+
+app.get('/auth/login',redirectIfAuthenticated,loginController)
+
+app.get("/auth/logout", logoutController);
 
 app.post('/posts/store',auth,storePost,storePostController)
 
@@ -62,8 +63,6 @@ app.get('/post/:id',getPostController )
 app.post('/users/login',redirectIfAuthenticated,loginUserController)
 
 app.post('/users/register', redirectIfAuthenticated,storeUserController)
-
-app.get('/auth/login',redirectIfAuthenticated,loginController)
 
 app.get('/about', (req, res) => {
   res.render('about')
