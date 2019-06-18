@@ -16,6 +16,7 @@ const connectMongo = require('connect-mongo')
 const mongoStore = connectMongo(expressSession)
 const auth = require('./middleware/auth')
 const connectFlash = require('connect-flash')
+const redirectIfAuthenticated = require('./middleware/redirectIfAuthenticated')
 const app = new express()
 
 
@@ -52,11 +53,11 @@ app.get('/auth/register',createUserController)
 
 app.get('/post/:id',getPostController )
 
-app.post('/users/login',loginUserController)
+app.post('/users/login',redirectIfAuthenticated,loginUserController)
 
-app.post('/users/register', storeUserController)
+app.post('/users/register', redirectIfAuthenticated,storeUserController)
 
-app.get('/auth/login',loginController)
+app.get('/auth/login',redirectIfAuthenticated,loginController)
 
 app.get('/about', (req, res) => {
   res.render('about')
