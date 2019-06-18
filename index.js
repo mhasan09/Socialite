@@ -14,7 +14,7 @@ const loginUserController = require('./controllers/loginUser')
 const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')
 const mongoStore = connectMongo(expressSession)
-
+const auth = require('./middleware/auth')
 const app = new express()
 
 
@@ -41,11 +41,11 @@ app.use('/posts/store', storePost)
 
 app.get('/', homePageController)
 
-app.get('/posts/new',createPostController)
+app.get('/posts/new',auth,createPostController)
+
+app.post('/posts/store',auth,storePost,storePostController)
 
 app.get('/auth/register',createUserController)
-
-app.post('/posts/store',storePostController)
 
 app.get('/post/:id',getPostController )
 
