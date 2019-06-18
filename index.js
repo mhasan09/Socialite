@@ -15,6 +15,7 @@ const expressSession = require('express-session')
 const connectMongo = require('connect-mongo')
 const mongoStore = connectMongo(expressSession)
 const auth = require('./middleware/auth')
+const connectFlash = require('connect-flash')
 const app = new express()
 
 
@@ -23,6 +24,7 @@ app.use(express.static('public'))
 app.use(expressEdge)
 app.use(fileUpload())
 app.set('views', `${__dirname}/views`)
+
 
 app.use(bodyParser.json())
 mongoose.connect('mongodb://localhost/node-js-blog')
@@ -34,6 +36,7 @@ app.use(expressSession({
 
 }))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(connectFlash())
 
 const storePost = require('./middleware/storePost')
 
