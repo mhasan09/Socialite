@@ -12,10 +12,12 @@ const storeUserController = require('./controllers/storeUser')
 const loginController = require('./controllers/login')
 const loginUserController = require('./controllers/loginUser')
 const expressSession = require('express-session')
+const connectMongo = require('connect-mongo')
+const mongoStore = connectMongo(expressSession)
 
 const app = new express()
 
-mongoose.connect('mongodb://localhost/node-js-blog')
+
 
 app.use(express.static('public'))
 app.use(expressEdge)
@@ -23,9 +25,13 @@ app.use(fileUpload())
 app.set('views', `${__dirname}/views`)
 
 app.use(bodyParser.json())
+mongoose.connect('mongodb://localhost/node-js-blog')
 app.use(expressSession({
-  secret : 'secret'
-  
+  secret : 'secret',
+  store : new mongoStore({
+    mongooseConnection : mongoose.connection
+  })
+
 }))
 app.use(bodyParser.urlencoded({ extended: true }))
 
