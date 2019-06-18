@@ -52,7 +52,7 @@ app.get('/posts/new',auth,createPostController)
 
 app.get('/auth/login',redirectIfAuthenticated,loginController)
 
-app.get("/auth/logout", logoutController);
+app.get("/auth/logout",auth, logoutController);
 
 app.post('/posts/store',auth,storePost,storePostController)
 
@@ -71,6 +71,8 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
   res.render('contact')
 })
+
+app.use((req,res)=> res.render('not-found'))
 
 app.listen(4000, () => {
   console.log('App listening on port 4000')
