@@ -18,7 +18,8 @@ const connectFlash = require('connect-flash')
 const redirectIfAuthenticated = require('./middleware/redirectIfAuthenticated')
 const edge = require('edge.js')
 const loginUserController = require('./controllers/loginUser')
-const logoutController = require("./controllers/logout");
+const logoutController = require("./controllers/logout")
+const cloudinary = require('cloudinary')
 const app = new express()
 mongoose.connect('mongodb://localhost/node-js-blog')
 
@@ -42,6 +43,12 @@ app.use(connectFlash())
 const storePost = require('./middleware/storePost')
 
 app.use('/posts/store', storePost)
+
+cloudinary.config({
+  api_key : '229448141623746',
+  api_secret : '3LCiz6aKuo6ISxDqD4-HdTeE5Eg',
+  cloud_name : 'dbahof66r' , 
+})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
