@@ -3,4 +3,4 @@ module.exports = (req,res,next) => {
       return res.redirect('/posts/new')
     }
     next()
-  }
+  } 
