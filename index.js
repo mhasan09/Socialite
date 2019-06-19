@@ -22,7 +22,7 @@ const loginUserController = require('./controllers/loginUser')
 const logoutController = require("./controllers/logout")
 const cloudinary = require('cloudinary')
 const app = new express()
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI || process.env.DB_URI)
 
 app.use(express.static('public'))
 app.use(expressEdge)
