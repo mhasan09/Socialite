@@ -22,7 +22,7 @@ const loginUserController = require('./controllers/loginUser')
 const logoutController = require("./controllers/logout")
 const cloudinary = require('cloudinary')
 const app = new express()
-mongoose.connect(process.env.MONGODB_URI || process.env.DB_URI)
+mongoose.connect(process.env.DB_URI)
 
 app.use(express.static('public'))
 app.use(expressEdge)
@@ -81,6 +81,7 @@ app.get('/contact', (req, res) => {
 })
 
 app.use((req,res)=> res.render('not-found'))
-app.listen(process.env.PORT , () => {
+
+app.listen(process.env.PORT, () => {
   console.log(`App listening on port ${process.env.PORT}`)
 })
