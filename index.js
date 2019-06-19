@@ -82,6 +82,6 @@ app.get('/contact', (req, res) => {
 
 app.use((req,res)=> res.render('not-found'))
 
-app.listen(process.env.PORT , () => {
+app.listen(process.env.PORT || 4000 , () => {
   console.log(`App listening on port ${process.env.PORT}`)
 })
